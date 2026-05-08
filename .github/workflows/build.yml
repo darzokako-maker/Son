@@ -9,22 +9,22 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    # Derleyiciyi (cl.exe) aktif eder
+    # Derleyici araçlarını (cl.exe) tanımlayan adım
     - name: Setup MSVC
       uses: ilammy/msvc-dev-cmd@v1
 
-    # WinDivert dosyalarını indirir ve hazırlar
+    # WinDivert dosyalarını indirip klasöre çıkaran adım
     - name: Download WinDivert
       run: |
         curl -L https://github.com/basil00/WinDivert/releases/download/v2.2.2/WinDivert-2.2.2-A.zip -o windivert.zip
         expand-archive windivert.zip -destinationpath wd
 
-    # Derleme İşlemi
+    # Hatanın düzeltildiği derleme komutu
     - name: Compile
       run: |
-        cl.exe /EHsc /I wd/WinDivert-2.2.2-A/include main.cpp /link /LIBPATH:wd/WinDivert-2.2.2-A/x64 WinDivert.lib /OUT:SonOyuncuBlink.exe
+        cl.exe /EHsc /I wd/WinDivert-2.2.2-A/include main.cpp /link /LIBPATH:wd/WinDivert-2.2.2-A/x64 WinDivert.lib user32.lib /OUT:SonOyuncuBlink.exe
 
-    # Oluşan EXE ve Driver dosyalarını paketler
+    # EXE ve gerekli sürücüleri paketleyen adım
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
