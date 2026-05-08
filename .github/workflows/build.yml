@@ -1,25 +1,31 @@
-name: Build-SonOyuncu-Blink
+name: SonOyuncu-Blink-Build
+
 on: [push]
+
 jobs:
   build:
     runs-on: windows-latest
+
     steps:
     - uses: actions/checkout@v4
 
-    # C++ Derleyicisini (cl.exe) aktif eden kritik adım
-    - name: Setup MSVC Developer Command Prompt
+    # Derleyiciyi (cl.exe) aktif eder
+    - name: Setup MSVC
       uses: ilammy/msvc-dev-cmd@v1
 
+    # WinDivert dosyalarını indirir ve hazırlar
     - name: Download WinDivert
       run: |
-        curl -L https://github.com/basil00/WinDivert/releases/download/v2.2.2/WinDivert-2.2.2-A.zip -o wd.zip
-        expand-archive wd.zip -destinationpath wd
+        curl -L https://github.com/basil00/WinDivert/releases/download/v2.2.2/WinDivert-2.2.2-A.zip -o windivert.zip
+        expand-archive windivert.zip -destinationpath wd
 
+    # Derleme İşlemi
     - name: Compile
       run: |
         cl.exe /EHsc /I wd/WinDivert-2.2.2-A/include main.cpp /link /LIBPATH:wd/WinDivert-2.2.2-A/x64 WinDivert.lib /OUT:SonOyuncuBlink.exe
 
-    - name: Create Artifact
+    # Oluşan EXE ve Driver dosyalarını paketler
+    - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
         name: SonOyuncu-Blink-EXE
