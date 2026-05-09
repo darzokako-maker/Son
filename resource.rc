@@ -1,0 +1,21 @@
+#include "resource.h"
+#include "windows.h"
+
+IDR_DLL_FILE RCDATA "WinDivert.dll"
+IDR_SYS_FILE RCDATA "WinDivert64.sys"
+
+IDM_MAIN_MENU MENU
+BEGIN
+    POPUP "&Hile Durumu"
+    BEGIN
+        MENUITEM "Durum: BEKLEMEDE", IDM_STATUS, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "&Sifirla / Yeniden Baslat", IDM_RESET
+        MENUITEM "&Kapat", IDM_EXIT
+    END
+    POPUP "&Bypass Ayarlari"
+    BEGIN
+        MENUITEM "Packet Smoothing (Gizlilik)", IDM_BYPASS_MODE, CHECKED
+    END
+END
+
